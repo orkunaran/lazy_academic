@@ -111,9 +111,11 @@ class lazy_academic:
         # select category to group data
         self.category = st.selectbox(label='Select the grouping variable',
                                      options=column_names)
-
-        self.categories = self.df[self.category].unique()
-        self.n_categories = len(self.categories)
+        if self.category:
+            self.categories = self.df[self.category].unique()
+            self.n_categories = len(self.categories)
+        else:
+            self.category = None
 
         return self.category, self.categories, self.n_categories
 
@@ -183,6 +185,8 @@ class lazy_academic:
                     freq = pd.DataFrame.from_records([{'variable_name': col,
                                                        f"{self.category} = {cat}: \n n (%)": s}])
                     self.table = pd.concat([self.table, freq])
+
+        return self.table
 
     def calculate_p(self) -> object:
         p_value = []

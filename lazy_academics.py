@@ -46,7 +46,8 @@ drops = la.columns_to_drop
 
 selection = st.selectbox(label="Please select an option to run",
                          options=['1 - None',
-                                  '2 - Descriptive Statistics',
+                                  '2a - Descriptive Statistics - numerics',
+                                  '2b - Descriptive Statistics - categories',
                                   '3 - Compare two or more groups',
                                   '4 - Compare pre-post treatment/intervention results',
                                   '5 - Compare pre-pst treatment/intervention results within groups']
@@ -55,14 +56,24 @@ selection = st.selectbox(label="Please select an option to run",
 
 if selection == '1 - None':
     pass
-elif selection == '2 - Descriptive Statistics':
-    category = la.define_category
-    if category is None or len(category) < 2:
+elif selection == '2a - Descriptive Statistics - numerics':
+    category, categories, n_categories = la.define_category
+    if category is None or len(category) <= 2:
         table = la.descriptive_nums
         st.write(table)
         la.download_table()
     else:
         table = la.descriptive_multiple_nums
+        st.write(table)
+        la.download_table()
+elif selection == '2b - Descriptive Statistics - categories':
+    category, categories, n_categories = la.define_category
+    if category is None or len(category) < 2:
+        table = la.descriptive_cats()
+        st.write(table)
+        la.download_table()
+    else:
+        table = la.descriptive_multiple_cats()
         st.write(table)
         la.download_table()
 elif selection == '3 - Compare two or more groups':
