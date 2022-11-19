@@ -58,7 +58,7 @@ if selection == '1 - None':
     pass
 elif selection == '2a - Descriptive Statistics - numerics':
     category, categories, n_categories = la.define_category
-    if category is None or len(category) <= 2:
+    if category is None or n_categories < 2:
         table = la.descriptive_nums
         st.write(table)
         la.download_table()

@@ -164,12 +164,14 @@ class lazy_academic:
     @property
     def descriptive_multiple_nums(self):
         self.table = pd.DataFrame()
-        self.table['variable_name'] = self.df.select_dtypes(exclude='object').columns
-        for index, cat in enumerate(self.categories):
+        self.table['variable_name'] = self.df.columns
+        for index,cat in enumerate(self.categories):
             for col in self.df.select_dtypes(exclude='object').columns:
-                self.table.loc[self.table.variable_name == col, f"{self.category}: {cat} \n mean ± sd "] = \
-                    f"{self.df[self.df[self.category] == cat][col].mean():.2f} ± " \
-                    f"{self.df[self.df[self.category] == cat][col].std():.2f}"
+                colname = f"{self.category}: {cat} \n mean ± sd "
+                mask = self.df[self.df[self.category] == cat]
+                m = mask[col].mean()
+                s = mask[col].std()
+                self.table.loc[self.table.variable_name == col, colname] = f"{m:.2f} ± {s:.2f}"
 
         return self.table
 
